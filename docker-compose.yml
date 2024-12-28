@@ -1,8 +1,13 @@
 services:
-  web:
-    build: .
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python_app
     ports:
       - "5000:5000"
+    volumes:
+      - ./app:/app/app
     environment:
-      - FLASK_ENV=development
-      - FLASK_APP=app/main.py
+      - PYTHONUNBUFFERED=1
+    command: gunicorn app.main:app -b 0.0.0.0:5000 --reload
