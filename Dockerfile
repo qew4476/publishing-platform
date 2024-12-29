@@ -7,7 +7,10 @@ WORKDIR /app
 # 「COPY . .」 have the same effect in this case
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
+
+RUN /bin/uv pip install --system --no-cache-dir -r requirements.txt
+
 
 EXPOSE 5000
 
