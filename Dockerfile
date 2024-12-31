@@ -1,16 +1,15 @@
 FROM python:3.11-slim
 
-#It will use a folder named "app" in the container
 WORKDIR /app
 
-#Copy the contents of the current directory to "/app" in the container
-# 「COPY . .」 have the same effect in this case
+# Only copy the requirement file.  Notes: /app/: workdir
+COPY requirements.txt /app/
+
+#  Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the remaining files
 COPY . /app
-
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
-
-RUN /bin/uv pip install --system --no-cache-dir -r requirements.txt
-
 
 EXPOSE 5000
 
